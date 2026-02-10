@@ -8,6 +8,7 @@ const MAX_API_TRIES = 10;
 function App() {
 	const [count, setCount] = useState(0);
 	const [currentTime, setCurrentTime] = useState(0);
+	const [query, setQuery] = useState("");
 
 	// reaches out to the Python API up to 10 times with 1 second delays
 	function getTime(tries=1){
@@ -146,6 +147,36 @@ function App() {
 	}
 
 
+	function runQuery() {
+		console.log("Sending query...");	
+		fetch('/api/query?' + new URLSearchParams(
+				{
+					query: query,
+				}
+			)
+		).then(
+			response => {
+				if (response.ok) {
+					return response.json();
+				}
+				throw response; // will be handled by catch
+			}
+		).then(
+			data => {
+				console.log("Query results received!");
+				setItemGrid(data);
+				console.log(data);
+			}
+		).catch(
+			exception => {
+				console.log("Couldn't connect!");
+				throw exception;
+			}
+		);
+	}
+
+
+
 	function displayHeader(header, index) {
 		return (
 			<th key={index}>
@@ -170,6 +201,18 @@ function App() {
 		);
 	}
 
+
+	function handleChange(event) {
+		let userInput = event.target.value;
+
+		setQuery(userInput);
+	}
+
+	function handleSubmit(event) {
+		runQuery()
+		// prevents default form submission behavior of refreshing page
+		event.preventDefault();
+	}
 
 	return (
 		<>
@@ -197,6 +240,21 @@ function App() {
 			<p className="read-the-docs">
 				Click on the Vite and React logos to learn more
 			</p>
+			<form onSubmit={handleSubmit}>
+				<textarea 
+					onChange={handleChange}
+					type='text'
+					placeholder=""
+					value={query}
+					disabled={false}
+					autoComplete="off"
+					autoFocus={true}
+				/>
+				<button 
+					type="submit"
+					disabled = {false}
+				>Submit</button>
+			</form>
 			{itemGrid &&
 				<table>
 					<thead>
