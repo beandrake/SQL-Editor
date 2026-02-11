@@ -27,7 +27,7 @@ function ResultsGrid(props){
 	}
 
 	return (
-		<div>
+		<div className="results">
 			{props.itemGrid &&
 				<table>
 					<thead>

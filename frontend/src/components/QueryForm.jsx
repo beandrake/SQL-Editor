@@ -28,6 +28,7 @@ function QueryForm(props){
 				autoComplete="off"
 				autoFocus={true}
 			/>
+			<br/>
 			<button 
 				type="submit"
 				disabled = {false}
