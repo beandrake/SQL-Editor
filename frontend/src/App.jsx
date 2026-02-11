@@ -1,4 +1,7 @@
 import { useState, useEffect } from 'react'
+import QueryForm from './components/QueryForm'
+import ResultsGrid from './components/ResultsGrid'
+
 import reactLogo from './assets/react.svg'
 import viteLogo from '/vite.svg'
 import './App.css'
@@ -6,9 +9,9 @@ import './App.css'
 const MAX_API_TRIES = 10;
 
 function App() {
+	const [itemGrid, setItemGrid] = useState(null);
 	const [count, setCount] = useState(0);
 	const [currentTime, setCurrentTime] = useState(0);
-	const [query, setQuery] = useState("");
 
 	// reaches out to the Python API up to 10 times with 1 second delays
 	function getTime(tries=1){
@@ -53,7 +56,6 @@ function App() {
 	);
 
 
-	const [itemGrid, setItemGrid] = useState(null);
 
 	function loadData2222() {
 		console.log("Asking API for data...");
@@ -147,7 +149,7 @@ function App() {
 	}
 
 
-	function runQuery() {
+	function runQuery(query) {
 		console.log("Sending query...");	
 		fetch('/api/query?' + new URLSearchParams(
 				{
@@ -177,42 +179,6 @@ function App() {
 
 
 
-	function displayHeader(header, index) {
-		return (
-			<th key={index}>
-				{header}
-			</th>
-		);
-	}
-	
-	function displayItem(item, index) {
-		return (
-			<td key={index}>
-				{item}
-			</td>
-		);
-	}
-	
-	function displayRow(row, index) {
-		return (
-			<tr key={index}>
-				{row.map(displayItem)}
-			</tr>
-		);
-	}
-
-
-	function handleChange(event) {
-		let userInput = event.target.value;
-
-		setQuery(userInput);
-	}
-
-	function handleSubmit(event) {
-		runQuery()
-		// prevents default form submission behavior of refreshing page
-		event.preventDefault();
-	}
 
 	return (
 		<>
@@ -240,33 +206,12 @@ function App() {
 			<p className="read-the-docs">
 				Click on the Vite and React logos to learn more
 			</p>
-			<form onSubmit={handleSubmit}>
-				<textarea 
-					onChange={handleChange}
-					type='text'
-					placeholder=""
-					value={query}
-					disabled={false}
-					autoComplete="off"
-					autoFocus={true}
-				/>
-				<button 
-					type="submit"
-					disabled = {false}
-				>Submit</button>
-			</form>
-			{itemGrid &&
-				<table>
-					<thead>
-						<tr>
-							{itemGrid.headers.map(displayHeader)}	
-						</tr>
-					</thead>
-					<tbody>
-						{itemGrid.records.map(displayRow)}
-					</tbody>
-				</table>
-			}
+			<QueryForm
+				runQuery={runQuery}
+			/>
+			<ResultsGrid
+				itemGrid={itemGrid}
+			/>
 		</>
 	)
 }
