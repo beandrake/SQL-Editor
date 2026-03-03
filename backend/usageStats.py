@@ -18,6 +18,9 @@ class UsageStats:
 	
 
 	def __init__(self, maxMasteryRank, tableNames):
+		"""
+		Initialize our database and a few tables.
+		"""
 		self.maxMasteryRank = maxMasteryRank
 		self.tableNames = tableNames
 
@@ -30,10 +33,13 @@ class UsageStats:
 		)
 		self.cursor = self.database.cursor()
 		self._createTables()
-		self._prepareQueries()
+		self._prepareInsertQuery()
 
 
 	def _createTables(self):
+		"""
+		For each entry in tableNames, creates a database table for stat data.
+		"""
 		# table definition, contains two placeholders (PH) to replace later
 		makeTableQuery = r"""	
 			CREATE TABLE --PH_Name--(
@@ -60,13 +66,17 @@ class UsageStats:
 			self.cursor.execute(makeTableQuery)
 			previousName = name
 		
-		# verify existence (can be removed later)
+		# test: verify that tables exist (can be removed later)
 		#self.cursor.execute(r"SELECT name FROM sqlite_schema WHERE type='table'")
 		#for result in self.cursor:
 		#	print(result)
 
 
-	def _prepareQueries(self):
+	def _prepareInsertQuery(self):
+		"""
+		Prepare most of the query that will initially populate the tables.
+		"""
+		# query will contain a variable number of MR columns: make them.
 		masteryRankColumns = "mr0"
 		masteryRankValues = "?"
 		for rank in range(1, self.maxMasteryRank+1):
@@ -82,6 +92,9 @@ class UsageStats:
 
 
 	def loadStats(self, table, year, data):
+		"""
+		Insert the specified year's data into the corresponding database table.
+		"""
 		
 		query = self.insertQuery.replace("--PH_Name--", table)
 		
@@ -134,12 +147,14 @@ class UsageStats:
 		self.database.close()
 
 
-	def clearTable(self):
+	def clearTable(self, table):
 		"""
-		Removes all records from the database.
+		Removes all records from the specified database table.
 		"""
-		# sqlite doesn't have truncate; this is the advised alternative
-		self.cursor.execute(r"DROP TABLE warframe")
+		# sqlite doesn't have truncate; DROP TABLE is the advised alternative
+		query = "DROP TABLE --PH_Name--"
+		query = query.replace("--PH_Name--", table)
+		self.cursor.execute(query)
 		self._createTables()
 
 
