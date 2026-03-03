@@ -2,7 +2,7 @@ import React from 'react';
 
 function QueryForm(props){
 
-	const [query, setQuery] = React.useState("");
+	const [query, setQuery] = React.useState(props.defaultQueryText);
 
 	function handleChange(event) {
 		let userInput = event.target.value;
@@ -22,7 +22,7 @@ function QueryForm(props){
 			<textarea 
 				onChange={handleChange}
 				type='text'
-				placeholder=""
+				placeholder=''
 				value={query}
 				disabled={false}
 				autoComplete="off"

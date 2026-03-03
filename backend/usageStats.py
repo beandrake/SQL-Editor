@@ -9,7 +9,7 @@ import datetime
 
 class UsageStats:
 	"""
-	Contains yearly Warframe usage data saved locally to an sqlite3 database.
+	An interface to an sqlite3 database containng yearly Warframe usage data.
 	"""
 
 	# Without PARSE_DECLTYPES, a datetime.date that is inserted into the sqlite
@@ -134,12 +134,12 @@ class UsageStats:
 		self.database.close()
 
 
-	def clearNotes(self):
+	def clearTable(self):
 		"""
 		Removes all records from the database.
 		"""
 		# sqlite doesn't have truncate; this is the advised alternative
-		self.cursor.execute(r"DROP TABLE notes")
+		self.cursor.execute(r"DROP TABLE warframe")
 		self._createTables()
 
 

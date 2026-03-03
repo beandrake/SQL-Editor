@@ -1,10 +1,33 @@
 import { useState, useEffect } from 'react'
 import QueryForm from './components/QueryForm'
 import ResultsGrid from './components/ResultsGrid'
-
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
+import coreFrameQuery from './queries/coreFrame' 
 import './App.css'
+
+/*
+	Todo List:
+
+		- This App.jsx file is overdue for refactoring.
+				Some of the content can probably be removed entirely,
+				but first at least put some of the functionality in
+				other files.
+
+		- Frontend CMD gets errors when trying to connect to backend.
+				This removes the URL from the CMD, and it's less than clean.
+
+		- Interface is a bit all over the place; how to make it coherent?
+				Maybe have some buttons for pre-generated example queries?
+				Or perhaps something else.
+
+		- Error-handling for bad queries.
+
+		- Eventually will probably want to extract data returned from queries.
+				Can currently copy and paste into in full to Excel/Sheets.
+					Is that enough for now?
+					Maybe hold off until use cases validate a need for more.
+*/
+
+
 
 const MAX_API_TRIES = 10;
 
@@ -57,56 +80,9 @@ function App() {
 
 
 
-	function loadData2222() {
-		console.log("Asking API for data...");
-		fetch('/api/data')
-			.then(
-				response => {
-					if (response.ok) {
-						return response.json();
-					}
-					throw response; // will be handled by catch
-				}
-			).then(
-				data => {
-					console.log("Data received!");
-					setItemGrid(data);
-					console.log(data);
-				}
-			).catch(
-				exception => {
-					console.log("Couldn't connect!");
-					throw exception;
-				}
-			);
-		fetch(
-			'https://api.sunrise-sunset.org/json?' + new URLSearchParams(
-				{
-					lat: 69,
-					lng: 108,
-				}
-			)
-		).then(
-			response => {
-				if (response.ok) {
-					return response.json();
-				}
-				throw response; // will be handled by catch
-			}
-		).then(
-			data => {
-				console.log("Data received!");
-				console.log(data);
-			}
-		).catch(
-			exception => {
-				console.log("Couldn't connect!");
-				throw exception;
-			}
-		);
-	}
 
-	function loadData() {
+
+	function performSampleQuery() {
 		console.log("Asking API for data...");
 		let query = `
 		SELECT
@@ -186,8 +162,8 @@ function App() {
 				<button onClick={() => setCount((count) => count + 1)}>
 					count is {count}
 				</button>
-				<button onClick={loadData}>
-					Load Data
+				<button onClick={performSampleQuery}>
+					Sample Query
 				</button>
 				<p>
 					Edit <code>src/App.jsx</code> and save to test HMR
@@ -195,6 +171,7 @@ function App() {
 				<p>First rendered at {new Date(currentTime * 1000).toLocaleString()}.</p>
 				<QueryForm
 					runQuery={runQuery}
+					defaultQueryText={coreFrameQuery}
 				/>			
 			</div>
 			<div className="lower">

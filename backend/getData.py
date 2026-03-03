@@ -1,7 +1,7 @@
 import requests
 import json
 
-# text YEAR should be replaced with a year from 2000 thru 2025
+# text YEAR should be replaced with a year from 2020 thru 20XX
 # Example: https://www-static.warframe.com/repos/WarframeUsageData2025.json
 SOURCE_URL = r"https://www-static.warframe.com/repos/WarframeUsageDataYEAR.json"
 #LOCAL_DATAFILE = r"data/WarframeUsageData2025.json"
@@ -11,12 +11,13 @@ SOURCE_URL = r"https://www-static.warframe.com/repos/WarframeUsageDataYEAR.json"
 TIMESTAMP_FORMAT = '%a, %d %b %Y %X %Z' 
 
 
-def _get_url_for_year(year):
-	return SOURCE_URL.replace("YEAR", str(year))
-
-
 def get_and_parse_data(year):
-	yearURL = _get_url_for_year(year)
+	"""
+	Pulls usage data from the URL and coverts the json into a list of dicts.
+	Returns the list.
+	"""
+	# replace placeholder in URL with our actual year
+	yearURL = SOURCE_URL.replace("YEAR", str(year))
 
 	# download json as a string	
 	payload = requests.get(yearURL)
@@ -27,6 +28,7 @@ def get_and_parse_data(year):
 	return arrayOfDictionaries
 
 
+### Testing ###
 def _main():
 	data = get_and_parse_data(2025)
 	print(data)
