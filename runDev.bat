@@ -34,6 +34,9 @@ REM --------------- FRONT END -----------------
 REM Navigate to frontend directory.
 cd frontend
 
+REM Install needed packages for frontend.
+call npm install
+
 REM Start the frontend, which uses React.
 start npm run dev
 
