@@ -1,8 +1,10 @@
-import { useState, useEffect } from 'react'
-import QueryForm from './components/QueryForm'
-import ResultsGrid from './components/ResultsGrid'
-import coreFrameQuery from './queries/coreFrame' 
-import './App.css'
+import { useState, useEffect } from 'react';
+import QueryForm from './components/QueryForm';
+import ResultsGrid from './components/ResultsGrid';
+import coreFrameQuery from './queries/coreFrame';
+import './App.css';
+
+
 
 /*
 	Todo List:
@@ -36,6 +38,9 @@ function App() {
 	const [count, setCount] = useState(0);
 	const [currentTime, setCurrentTime] = useState(0);
 
+	// NOTE: React knows where to send fetch requests, see vite.config.js
+	
+	
 	// reaches out to the Python API up to 10 times with 1 second delays
 	function getTime(tries=1){
 		console.log("Asking API for current time, attempt #" + tries + "...");
@@ -68,8 +73,6 @@ function App() {
 			1000	//1 seconds
 		);
 	}
-
-
 
 	useEffect(
 		() => {						
@@ -183,4 +186,4 @@ function App() {
 	)
 }
 
-export default App
+export default App;
