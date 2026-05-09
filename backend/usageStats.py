@@ -121,15 +121,20 @@ class UsageStats:
 	
 	def runQuery(self, query, values=[]):
 		"""
-		Run the query and return the results into a dictionary containing
+		Run the query and return any results into a dictionary containing
 		two items: headers and records.
 		"""
 		self.cursor.execute(query, values)
+		
+		# If there are no results, we're done.
+		if self.cursor.description == None:
+			return None;
+
+		# Get the headers and the records and return them as a dictionary
 		headerList = [desc[0] for desc in self.cursor.description]
 		recordList = []
 		for record in self.cursor:
 			recordList.append(record)
-		
 		return {
 			"headers": headerList,
 			"records": recordList

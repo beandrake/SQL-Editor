@@ -101,31 +101,9 @@ function App() {
 		WHERE year=2025
 		ORDER BY overall DESC;
 		`		
-		fetch('/api/query?' + new URLSearchParams(
-				{
-					query: query,
-				}
-			)
-		).then(
-			response => {
-				if (response.ok) {
-					return response.json();
-				}
-				throw response; // will be handled by catch
-			}
-		).then(
-			data => {
-				console.log("Data received!");
-				setItemGrid(data);
-				console.log(data);
-			}
-		).catch(
-			exception => {
-				console.log("Couldn't connect!");
-				throw exception;
-			}
-		);
+		runQuery(query);
 	}
+	
 
 
 	function runQuery(query) {
@@ -137,20 +115,30 @@ function App() {
 			)
 		).then(
 			response => {
+				console.log("Response received, status code: " + response.status);
 				if (response.ok) {
-					return response.json();
+					if (response.status === 204){
+						return Promise.resolve(null);
+					}else{
+						let data = response.json()
+						console.log(data);
+						return data;
+					}
 				}
 				throw response; // will be handled by catch
 			}
 		).then(
 			data => {
 				console.log("Query results received!");
-				setItemGrid(data);
+				if (data != null){
+					setItemGrid(data);
+				}
 				console.log(data);
 			}
 		).catch(
 			exception => {
-				console.log("Couldn't connect!");
+				// put any specific error-handling here
+				console.log("...and then an error occurred.");
 				throw exception;
 			}
 		);

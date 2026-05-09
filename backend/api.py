@@ -86,5 +86,9 @@ def get_api_query():
 	print(query)
 	results = statData.runQuery(query)
 	print(results)
-
-	return results
+	if results is None:
+		httpStatusCode = 204
+		results = ''
+	else:
+		httpStatusCode = 200
+	return (results, httpStatusCode)
