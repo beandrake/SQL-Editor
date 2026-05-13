@@ -65,7 +65,7 @@ class UsageStats:
 			print(makeTableQuery)
 			self.cursor.execute(makeTableQuery)
 			previousName = name
-		
+		self.database.commit()
 		# test: verify that tables exist (can be removed later)
 		#self.cursor.execute(r"SELECT name FROM sqlite_schema WHERE type='table'")
 		#for result in self.cursor:
@@ -116,6 +116,7 @@ class UsageStats:
 			#print(values)
 
 			self.cursor.execute(query, values)
+		self.database.commit()
 
 
 	
@@ -125,10 +126,11 @@ class UsageStats:
 		two items: headers and records.
 		"""
 		self.cursor.execute(query, values)
+		self.database.commit();
 		
 		# If there are no results, we're done.
 		if self.cursor.description == None:
-			return None;
+			return None
 
 		# Get the headers and the records and return them as a dictionary
 		headerList = [desc[0] for desc in self.cursor.description]
@@ -160,7 +162,8 @@ class UsageStats:
 		query = "DROP TABLE --PH_Name--"
 		query = query.replace("--PH_Name--", table)
 		self.cursor.execute(query)
-		self._createTables()
+		self.database.commit()
+		#self._createTables()
 
 
 
@@ -186,7 +189,7 @@ class UsageStats:
 		loadedDatabase.backup(self.database, pages=1)
 		loadedDatabase.close()
 
-		#self.cursor = self.database.cursor()
+		self.cursor = self.database.cursor()
 		
 
 

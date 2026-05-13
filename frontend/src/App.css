@@ -24,8 +24,26 @@ form {
 }
 
 textarea {
+	margin-top: 10px;
+	margin-bottom: 10px;
 	width: 95%;
 	height: 80%;
+	white-space: pre; /* pre-formatted, preserves spaces, tabs, etc */
+	overflow-wrap: normal;
+	overflow-x: scroll;
+}
+
+.statusMessage {
+	padding-left: 9px;
+	text-align: left;
+	font-size: 85%;
+}
+
+.statusError {
+	background-color: rgb(253, 136, 136);
+}
+.statusFine {
+	background-color: rgb(217, 238, 255);
 }
 
 .lower {

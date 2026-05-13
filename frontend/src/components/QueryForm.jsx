@@ -28,7 +28,8 @@ function QueryForm(props){
 				autoComplete="off"
 				autoFocus={true}
 			/>
-			<br/>
+			<div className={"statusMessage " + (props.statusError ? "statusError" : "statusFine")}>
+				{props.statusMessage}</div>
 			<button 
 				type="submit"
 				disabled = {false}

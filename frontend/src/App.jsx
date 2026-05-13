@@ -4,6 +4,7 @@ import ResultsGrid from './components/ResultsGrid';
 import coreFrameQuery from './queries/coreFrame';
 import './App.css';
 
+// Edit this file and save to experience Hot Module Replacement.
 
 
 /*
@@ -34,6 +35,9 @@ import './App.css';
 const MAX_API_TRIES = 10;
 
 function App() {
+	
+	const [statusMessage, setStatusMessage] =  useState("Awaiting query...");
+	const [statusError, setStatusError] =  useState(false);
 	const [itemGrid, setItemGrid] = useState(null);
 	const [count, setCount] = useState(0);
 	const [currentTime, setCurrentTime] = useState(0);
@@ -116,15 +120,23 @@ function App() {
 		).then(
 			response => {
 				console.log("Response received, status code: " + response.status);
+				console.log(response);
+				setStatusError(!response.ok);
+				if (response.status === 400){
+					console.log("Here dat boi");
+					console.log(response.json());
+				}
 				if (response.ok) {
+					setStatusMessage("Query executed successfully.");
 					if (response.status === 204){
 						return Promise.resolve(null);
 					}else{
-						let data = response.json()
+						let data = response.json();
 						console.log(data);
 						return data;
 					}
 				}
+				setStatusMessage("Something bad happened. (add better error-handling later)");
 				throw response; // will be handled by catch
 			}
 		).then(
@@ -139,7 +151,7 @@ function App() {
 			exception => {
 				// put any specific error-handling here
 				console.log("...and then an error occurred.");
-				throw exception;
+				//throw exception; // enable anytime you want to see the details in the log
 			}
 		);
 	}
@@ -150,20 +162,12 @@ function App() {
 	return (
 		<>
 			<div className="upper">
-				<button onClick={() => setCount((count) => count + 1)}>
-					count is {count}
-				</button>
-				<button onClick={performSampleQuery}>
-					Sample Query
-				</button>
-				<p>
-					Edit <code>src/App.jsx</code> and save to test HMR
-				</p>
-				<p>First rendered at {new Date(currentTime * 1000).toLocaleString()}.</p>
 				<QueryForm
 					runQuery={runQuery}
 					defaultQueryText={coreFrameQuery}
-				/>			
+					statusMessage={statusMessage}
+					statusError={statusError}
+				/>
 			</div>
 			<div className="lower">
 				<ResultsGrid
