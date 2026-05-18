@@ -15,14 +15,9 @@ import './App.css';
 				but first at least put some of the functionality in
 				other files.
 
-		- Frontend CMD gets errors when trying to connect to backend.
-				This removes the URL from the CMD, and it's less than clean.
-
 		- Interface is a bit all over the place; how to make it coherent?
 				Maybe have some buttons for pre-generated example queries?
 				Or perhaps something else.
-
-		- Error-handling for bad queries.
 
 		- Eventually will probably want to extract data returned from queries.
 				Can currently copy and paste into in full to Excel/Sheets.
@@ -112,11 +107,8 @@ function App() {
 
 	function runQuery(query) {
 		console.log("Sending query...");	
-		fetch('/api/query?' + new URLSearchParams(
-				{
-					query: query,
-				}
-			)
+		fetch(
+			'/api/query?' + new URLSearchParams( {query: query} )
 		).then(
 			response => {
 				console.log("Response received, status code: " + response.status);

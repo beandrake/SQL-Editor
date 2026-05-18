@@ -126,7 +126,7 @@ class UsageStats:
 		two items: headers and records.
 		"""
 		self.cursor.execute(query, values)
-		self.database.commit();
+		self.database.commit()
 		
 		# If there are no results, we're done.
 		if self.cursor.description == None:
