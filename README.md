@@ -1,5 +1,5 @@
 # SQL-Editor
-Playing around with making my own interface to tinker with SQL on the fly, using React and Flask. Currently very much a work in progress.
+Playing around with making my own interface to tinker with SQL on the fly, using React and Flask.  At present the database gets loaded by retrieving JSON from a web endpoint and parsing the contents into records to populate each database table.  Currently very much a work in progress.
 
 ## Windows Instructions:
 1. You'll need [`git`](https://git-scm.com/), [`Node.js`](https://nodejs.org/) 25.2.1 or later , and [`Python`](https://nodejs.org/) 3.14.0 or later, so install those if you need them. 
